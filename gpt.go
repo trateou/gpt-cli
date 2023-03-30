@@ -39,9 +39,8 @@ func NewGptTrans(conf *SysConfig) GptTrans {
 	}
 }
 
-func (m *GptTrans) Trans(src string, target string, content string) string {
-	content = "请帮我把下列内容从" + src + "翻译到" + target + ":\n" + content
-	//fmt.Println(content)
+func (m *GptTrans) TransContent(src string, target string, content string) string {
+	content = "Please translate the following content from " + src + " to " + target + ":\n" + content
 	messages := make([]openai.ChatCompletionMessage, 0)
 	messages = append(messages, openai.ChatCompletionMessage{
 		Role:    openai.ChatMessageRoleUser,
@@ -57,18 +56,10 @@ func (m *GptTrans) Trans(src string, target string, content string) string {
 	)
 
 	if err != nil {
-		fmt.Println("%s", err.Error())
-		return ""
-		//panic(err)
+		fmt.Println(err.Error())
+		panic(err)
 	}
-
-	content = resp.Choices[0].Message.Content
-	messages = append(messages, openai.ChatCompletionMessage{
-		Role:    openai.ChatMessageRoleAssistant,
-		Content: content,
-	})
-	//fmt.Println(content)
-	return content
+	return resp.Choices[0].Message.Content
 }
 
 func (m *GptTrans) Chat() {
