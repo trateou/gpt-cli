@@ -113,7 +113,7 @@ func main() {
 		var lineCount = len(lines)
 		for index, segment := range lines {
 			fmt.Println("translating index:" + strconv.Itoa(index) + "/" + strconv.Itoa(lineCount))
-			d := model.TransContent("en", "cn", segment)
+			d := model.TransContent(sys_config.SrcLang, sys_config.DestLang, segment)
 			fmt.Println("response content size:" + strconv.Itoa(len(d)))
 			content += d
 		}
