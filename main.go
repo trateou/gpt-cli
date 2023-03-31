@@ -28,6 +28,7 @@ func ParseFileAsSegmentWithFileSize(path string, bufSize int) []string {
 	for scanner.Scan() {
 		// 读取一行数据
 		line := scanner.Text()
+		line += "\n"
 		if len(line) >= bufferSize {
 			if len(segment) != 0 {
 				dataList = append(dataList, segment)
