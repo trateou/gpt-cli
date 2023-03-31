@@ -1,6 +1,7 @@
 # gpt-cli
 - a terminal tool based on chatgpt
-![中文](/readme_cn.md)
+
+[中文](/readme_cn.md)
 
 ## Features
 1. Chatting
