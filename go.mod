@@ -1,4 +1,4 @@
-module gpt-cli
+module github.com/trateou/gpt-cli
 
 go 1.19
 

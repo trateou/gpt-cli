@@ -11,7 +11,7 @@
 ## 安装
 
 ```shell
-go get https://github.com/trateou/gpt-cli
+  go install github.com/trateou/gpt-cli@latest
 ```
 
 ## 使用
