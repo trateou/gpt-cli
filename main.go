@@ -89,6 +89,9 @@ func main() {
 				if len(strings.TrimSpace(sys_config.DestFile)) == 0 {
 					sys_config.DestFile = addLangPrefix(sys_config.SrcFile, sys_config.DestLang)
 				}
+				if sys_config.SegementSize == 0 {
+					sys_config.SegementSize = 8096
+				}
 			}
 		}
 	}
@@ -103,15 +106,15 @@ func main() {
 	} else if sys_config.Mode == "t" {
 		fmt.Println("translating file:" + sys_config.SrcFile + " to " + sys_config.DestFile)
 		// crate 7K buffer
-		const bufferSize = 5000
+		bufferSize := sys_config.SegementSize
 		model := NewGptTrans(&sys_config)
 		var content string
 		var lines = ParseFileAsSegmentWithFileSize(sys_config.SrcFile, bufferSize)
 		var lineCount = len(lines)
 		for index, segment := range lines {
 			fmt.Println("translating index:" + strconv.Itoa(index) + "/" + strconv.Itoa(lineCount))
-			//fmt.Println("raw:" + segment)
 			d := model.TransContent("en", "cn", segment)
+			fmt.Println("response content size:" + strconv.Itoa(len(d)))
 			content += d
 		}
 		f, err := os.Create(sys_config.DestFile)
@@ -128,7 +131,7 @@ func main() {
 		if err != nil {
 			panic(err)
 		}
-		fmt.Println("finished. from :" + sys_config.SrcLang + " to " + sys_config.DestLang)
+		fmt.Println("task finished. from:" + sys_config.SrcLang + " to " + sys_config.DestLang)
 	}
 
 }
