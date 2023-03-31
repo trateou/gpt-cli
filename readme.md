@@ -21,7 +21,7 @@ chat with gpt
 1. config
    a. terminal flag
    ```shell
-    ./gpt-cli --mode t 
+    ./gpt-cli --mode t --openai_secret your_openai_token
    ```
 
 2. config.yml
@@ -33,6 +33,7 @@ translator
 
 1. config
    ```shell
-   ./gpt-cli --mode t --src_file test.md --dest_lang cn
+   ./gpt-cli --mode t --src_file /path/your_source_file --dest_lang cn --openai_secret your_openai_token
    ```
 2. config.yml
+
