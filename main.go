@@ -58,7 +58,7 @@ func main() {
 
 	err := config.LoadFiles("config.yml")
 	if err != nil {
-		panic(err)
+		fmt.Println(err.Error())
 	}
 	var sys_config SysConfig
 
