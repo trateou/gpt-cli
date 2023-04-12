@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/gookit/config/v2"
 	"github.com/gookit/config/v2/yaml"
+	"github.com/gookit/goutil/fsutil"
 	"os"
 	"strconv"
 	"strings"
@@ -56,18 +57,27 @@ func main() {
 	// add driver for support yaml content
 	config.AddDriver(yaml.Driver)
 
-	err := config.LoadFiles("config.yml")
-	if err != nil {
-		fmt.Println(err.Error())
+	if fsutil.FileExists("config.yml") {
+		err := config.LoadFiles("config.yml")
+		if err != nil {
+			fmt.Println(err.Error())
+		}
 	}
+
 	var sys_config SysConfig
-
-	err = config.LoadFlags(os.Args)
-
+	err := config.LoadFlags(os.Args)
 	if err != nil {
 		panic(err)
 	}
 	config.BindStruct("", &sys_config)
+	if len(sys_config.Conf) != 0 {
+		err = config.LoadFiles(sys_config.Conf)
+		if err != nil {
+			fmt.Println(err.Error())
+		} else {
+			config.BindStruct("", &sys_config)
+		}
+	}
 	//config check
 	if len(sys_config.Mode) == 0 {
 		panic("Config.Mode Is Empty")
@@ -90,8 +100,8 @@ func main() {
 				if len(strings.TrimSpace(sys_config.DestFile)) == 0 {
 					sys_config.DestFile = addLangPrefix(sys_config.SrcFile, sys_config.DestLang)
 				}
-				if sys_config.SegementSize == 0 {
-					sys_config.SegementSize = 8096
+				if sys_config.SegmentSize == 0 {
+					sys_config.SegmentSize = 8096
 				}
 			}
 		}
@@ -107,7 +117,7 @@ func main() {
 	} else if sys_config.Mode == "t" {
 		fmt.Println("translating file:" + sys_config.SrcFile + " to " + sys_config.DestFile)
 		// crate 7K buffer
-		bufferSize := sys_config.SegementSize
+		bufferSize := sys_config.SegmentSize
 		model := NewGptTrans(&sys_config)
 		var content string
 		var lines = ParseFileAsSegmentWithFileSize(sys_config.SrcFile, bufferSize)

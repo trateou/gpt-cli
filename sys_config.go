@@ -12,5 +12,6 @@ type SysConfig struct {
 	SrcLang      string `mapstructure:"src_lang" comment:"not sure if not specify the src lang, how chatgpt detects"`
 	DestLang     string `mapstructure:"dest_lang"`
 	OpenaiSecret string `mapstructure:"openai_secret"`
-	SegementSize int    `mapstructure:"ss" comment:"default segment size is 8k"`
+	SegmentSize  int    `mapstructure:"ss" comment:"default segment size is 8k"`
+	Conf         string `mapstructure:"conf" comment:"set config file path"`
 }
